@@ -205,7 +205,24 @@ public class RealMinesPlaceholderAPI extends PlaceholderExpansion {
                 return "No mine named: " + mine;
             }
         }
-
+        
+        if (identifier.startsWith("mstime")) {
+            final String[] split = identifier.split("_");
+            final String mine = split[mineIndex];
+            final RMine m = this.plugin.getMineManager().getMine(mine);
+            if (m != null) {
+                if (m.getMineTimer() == null || m.getMineTimer().getCountdown() == null) {
+                    return "-1";
+                }
+                int secondsLeft = m.getMineTimer().getCountdown().getSecondsLeft();
+                int minutes = secondsLeft / 60;
+                int seconds = secondsLeft % 60;
+                return String.format("%d:%02d", minutes, seconds);
+            } else {
+                return "No mine named: " + mine;
+            }
+        }
+        
         return null;
     }
 }
